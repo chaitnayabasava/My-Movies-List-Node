@@ -11,6 +11,8 @@ const movieRoutes = require('./Routes/movies');
 const addFavRoutes = require('./Routes/addFavourite');
 const watchlatersRoutes = require('./Routes/watchlaters');
 
+const getUserDetails = require('./controller/user');
+
 const User = require('./models/User');
 
 // app.use(bodyParser.urlencoded({extended: false})); // This is to parse data coming from form
@@ -55,6 +57,7 @@ app.use('/tv', tvRoutes);
 app.use('/movie', movieRoutes);
 app.use('/fav', addFavRoutes);
 app.use('/watchlater', watchlatersRoutes);
+app.use('/user', getUserDetails);
 
 // Middleware to handle all errors that are thrown from different end points.
 app.use((error, req, res, next) => {

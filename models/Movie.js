@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('./User');
+const Genre = require('./Genre');
 
 const Schema = mongoose.Schema;
 const movieSchema = new Schema({
@@ -13,10 +13,8 @@ const movieSchema = new Schema({
     },
     genres: [
         {
-            _id: {
-                type: Number,
-                ref: 'Genre'
-            }
+            type: Number,
+            ref: 'Genre'
         }
     ]
 });

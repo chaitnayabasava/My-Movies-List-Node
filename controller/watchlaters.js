@@ -7,11 +7,10 @@ addMovie = (req, res, next) => {
     Movie.findById(movie.id)
     .then(m => {
         if(!m) {
-            const genres = movie.genres.map(genreId => {_id: genreId});
             const temp = Movie({
                 _id: movie.id,
                 name: movie.name,
-                genres: genres
+                genres: movie.genres
             })
             return temp.save();
         }
@@ -33,11 +32,10 @@ addSeries = (req, res, next) => {
     Series.findById(series.id)
     .then(m => {
         if(!m) {
-            const genres = series.genres.map(genreId => {_id: genreId});
             const temp = Series({
                 _id: series.id,
                 name: series.name,
-                genres: genres,
+                genres: series.genres,
                 status: series.status,
                 details: series.details
             })

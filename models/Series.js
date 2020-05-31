@@ -15,10 +15,8 @@ const seriesSchema = new Schema({
     },
     genres: [
         {
-            _id: {
-                type: Number,
-                ref: 'Genre'
-            }
+            type: Number,
+            ref: 'Genre'
         }
     ],
     details: [
