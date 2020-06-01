@@ -38,7 +38,7 @@ app.use((req, res, next) => {
                 return result;
             })
             .then(result => {
-                req.user = result;
+                req.userId = result._id;
                 next();
             })
             .catch(err => {

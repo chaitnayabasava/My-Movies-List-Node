@@ -1,5 +1,6 @@
 const Movie = require('../models/Movie');
 const Series = require('../models/Series');
+const User = require('../models/User');
 
 addMovie = (req, res, next) => {
     const movie = req.body.movie;
@@ -16,10 +17,15 @@ addMovie = (req, res, next) => {
         }
         return m;
     })
-    .then(result => req.user.addWatchLaterMovie(result))
-    .then(user => {
-        res.status(200).json(user);
+    .then(result => {
+        return User.findById(req.userId)
+        .then(user => user.addWatchLaterMovie(result))
+        .catch(err => {
+            if(!err.statusCode) err.statusCode = 500;
+            next(err);
+        });
     })
+    .then(user => res.status(200).json(user))
     .catch(err => {
         if(!err.statusCode) err.statusCode = 500;
         next(err);
@@ -43,8 +49,15 @@ addSeries = (req, res, next) => {
         }
         return m;
     })
-    .then(result => req.user.addWatchLaterSeries(result))
-    .then(user => res.status(200).json({user: user}))
+    .then(result => {
+        return User.findById(req.userId)
+        .then(user => user.addWatchLaterSeries(result))
+        .catch(err => {
+            if(!err.statusCode) err.statusCode = 500;
+            next(err);
+        });
+    })
+    .then(user => res.status(200).json(user))
     .catch(err => {
         if(!err.statusCode) err.statusCode = 500;
         next(err);

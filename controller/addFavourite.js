@@ -1,5 +1,6 @@
 const Movie = require('../models/Movie');
 const Series = require('../models/Series');
+const User = require('../models/User');
 
 addMovie = (req, res, next) => {
     const movie = req.body.movie;
@@ -7,9 +8,6 @@ addMovie = (req, res, next) => {
     Movie.findById(movie.id)
     .then(m => {
         if(!m) {
-            // const genres = movie.genres.map(genreId => {
-            //     return {_id: genreId}
-            // });
             const temp = Movie({
                 _id: movie.id,
                 name: movie.name,
@@ -19,7 +17,14 @@ addMovie = (req, res, next) => {
         }
         return m;
     })
-    .then(result => req.user.addFavouriteMovie(result))
+    .then(result => {
+        return User.findById(req.userId)
+        .then(user => user.addFavouriteMovie(result))
+        .catch(err => {
+            if(!err.statusCode) err.statusCode = 500;
+            next(err);
+        });
+    })
     .then(user => res.status(200).json(user))
     .catch(err => {
         if(!err.statusCode) err.statusCode = 500;
@@ -33,9 +38,6 @@ addSeries = (req, res, next) => {
     Series.findById(series.id)
     .then(m => {
         if(!m) {
-            // const genres = series.genres.map(genreId => {
-            //     return {_id: genreId}
-            // });
             const temp = Series({
                 _id: series.id,
                 name: series.name,
@@ -47,8 +49,15 @@ addSeries = (req, res, next) => {
         }
         return m;
     })
-    .then(result => req.user.addFavouriteSeries(result))
-    .then(user => res.status(200).json({user: user}))
+    .then(result => {
+        return User.findById(req.userId)
+        .then(user => user.addFavouriteSeries(result))
+        .catch(err => {
+            if(!err.statusCode) err.statusCode = 500;
+            next(err);
+        });
+    })
+    .then(user => res.status(200).json(user))
     .catch(err => {
         if(!err.statusCode) err.statusCode = 500;
         next(err);

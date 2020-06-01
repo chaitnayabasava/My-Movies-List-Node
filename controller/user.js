@@ -1,8 +1,7 @@
 const User = require('../models/User');
 
 module.exports = (req, res, next) => {
-    const user = req.user;
-    User.findById(user._id)
+    User.findById(req.userId)
     .select('-_id -password -__v')
     .populate(
         {
